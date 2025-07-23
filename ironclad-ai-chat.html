@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ironclad Roofing - AI-Powered Estimate Chat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background-color: rgba(0, 0, 0, 0.95);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+        }
+
+        /* Main Container */
+        .container {
+            flex: 1;
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 380px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 40px 30px;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-y: auto;
+        }
+
+        .benefit {
+            margin-bottom: 35px;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .benefit::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .benefit h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .benefit p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        /* Chat Container */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: rgba(10, 10, 10, 0.95);
+        }
+
+        /* Chat Messages */
+        .chat-messages {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Scrollbar styling */
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Messages */
+        .message {
+            max-width: 80%;
+            padding: 16px 20px;
+            border-radius: 16px;
+            line-height: 1.5;
+            animation: fadeIn 0.3s ease-in;
+            font-size: 15px;
+        }
+
+        .bot {
+            background-color: rgba(255, 255, 255, 0.08);
+            align-self: flex-start;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .user {
+            background-color: #fff;
+            color: #000;
+            align-self: flex-end;
+            font-weight: 500;
+        }
+
+        .typing {
+            background-color: rgba(255, 255, 255, 0.08);
+            align-self: flex-start;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px 20px;
+            border-radius: 16px;
+        }
+
+        .typing::after {
+            content: '...';
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        /* Chat Input */
+        .chat-input-container {
+            padding: 20px 30px 30px;
+            background-color: rgba(0, 0, 0, 0.95);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-form {
+            display: flex;
+            gap: 12px;
+            max-width: 900px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 16px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            font-size: 16px;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .chat-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .chat-input:focus {
+            border-color: rgba(255, 255, 255, 0.5);
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .chat-submit {
+            padding: 16px 32px;
+            background-color: #fff;
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: -0.3px;
+        }
+
+        .chat-submit:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+        }
+
+        .chat-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Estimate Display */
+        .estimate-display {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 16px;
+            margin-top: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .estimate-display h3 {
+            font-size: 24px;
+            margin-bottom: 25px;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .estimate-content {
+            white-space: pre-wrap;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 15px;
+        }
+
+        .estimate-actions {
+            margin-top: 25px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .estimate-button {
+            padding: 12px 24px;
+            background-color: #fff;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .estimate-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+        }
+
+        .estimate-button.secondary {
+            background-color: transparent;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .estimate-button.secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Error message */
+        .error-message {
+            background-color: rgba(244, 67, 54, 0.1);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            color: #ff6b6b;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        /* Loading spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s linear infinite;
+            margin-left: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(10px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .message {
+                max-width: 90%;
+            }
+
+            .chat-form {
+                gap: 8px;
+            }
+
+            .chat-submit {
+                padding: 16px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Ironclad Roofing</h1>
+        <p>Professional Roofing Solutions • Free Instant Estimates</p>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="benefit">
+                <h3>Licensed & Insured</h3>
+                <p>Fully licensed roofing contractors with comprehensive insurance coverage for your protection.</p>
+            </div>
+            <div class="benefit">
+                <h3>25+ Years Experience</h3>
+                <p>Trusted by thousands of homeowners with quality craftsmanship that stands the test of time.</p>
+            </div>
+            <div class="benefit">
+                <h3>Free Estimates</h3>
+                <p>Get a detailed estimate instantly with no obligation. We believe in transparent pricing.</p>
+            </div>
+            <div class="benefit">
+                <h3>Quality Materials</h3>
+                <p>We use only premium roofing materials from trusted manufacturers with excellent warranties.</p>
+            </div>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    Welcome to Ironclad Roofing! I'll help you get a free estimate for your roofing project. Let's start with a few questions.
+                </div>
+                <div class="message bot">
+                    What's your name?
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <form class="chat-form" id="chatForm">
+                    <input 
+                        type="text" 
+                        class="chat-input" 
+                        id="chatInput" 
+                        placeholder="Type your answer..." 
+                        autocomplete="off"
+                        required
+                    >
+                    <button type="submit" class="chat-submit" id="chatSubmit">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class IroncladAIChat {
+            constructor() {
+                this.messages = [];
+                this.customerData = {};
+                this.conversationContext = [];
+                this.isProcessing = false;
+                this.currentPhase = 'greeting';
+                
+                // Required information to collect
+                this.requiredInfo = {
+                    name: false,
+                    email: false,
+                    phone: false,
+                    address: false,
+                    roofSize: false,
+                    roofType: false,
+                    workType: false,
+                    urgency: false,
+                    material: false
+                };
+
+                // API endpoint - using Netlify function
+                this.apiEndpoint = '/.netlify/functions/generate-estimate';
+                
+                this.init();
+            }
+
+            init() {
+                this.chatMessages = document.getElementById('chatMessages');
+                this.chatForm = document.getElementById('chatForm');
+                this.chatInput = document.getElementById('chatInput');
+                this.chatSubmit = document.getElementById('chatSubmit');
+
+                this.chatForm.addEventListener('submit', (e) => this.handleSubmit(e));
+                
+                // Initialize conversation context
+                this.conversationContext = [
+                    {
+                        role: 'system',
+                        content: `You are a friendly, professional roofing consultant for Ironclad Roofing. 
+                        Your goal is to collect information naturally through conversation to provide an accurate roofing estimate.
+                        Be conversational but professional. Ask follow-up questions when needed.
+                        Required information to collect:
+                        - Customer name
+                        - Email address
+                        - Phone number
+                        - Property address
+                        - Approximate roof size or home square footage
+                        - Current roof type (shingles, metal, tile, etc.)
+                        - Type of work needed (replacement, repair, new construction)
+                        - Timeline/urgency
+                        - Preferred roofing material
+                        
+                        Once you have all required information, let the customer know you're preparing their estimate.`
+                    }
+                ];
+            }
+
+            async handleSubmit(e) {
+                e.preventDefault();
+                
+                const userInput = this.chatInput.value.trim();
+                if (!userInput || this.isProcessing) return;
+
+                // Add user message to chat
+                this.addMessage(userInput, 'user');
+                this.chatInput.value = '';
+                
+                // Show typing indicator
+                this.showTyping();
+                
+                // Process with AI
+                await this.processWithAI(userInput);
+            }
+
+            async processWithAI(userInput) {
+                this.isProcessing = true;
+                this.chatSubmit.disabled = true;
+
+                try {
+                    // Add user message to context
+                    this.conversationContext.push({
+                        role: 'user',
+                        content: userInput
+                    });
+
+                    // Extract information from conversation
+                    this.extractCustomerInfo(userInput);
+
+                    // Check if we have all required info
+                    const allInfoCollected = Object.values(this.requiredInfo).every(val => val === true);
+                    
+                    if (allInfoCollected && !this.customerData.estimateGenerated) {
+                        // Generate estimate
+                        this.removeTyping();
+                        this.addMessage("Great! I have all the information I need. Let me prepare your personalized roofing estimate...", 'bot');
+                        
+                        await this.generateEstimate();
+                    } else {
+                        // Continue conversation to collect info
+                        const response = await this.getAIResponse();
+                        this.removeTyping();
+                        this.addMessage(response, 'bot');
+                    }
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    this.removeTyping();
+                    this.showError('I apologize, but I encountered an error. Please try again or call us directly at (555) 123-4567.');
+                } finally {
+                    this.isProcessing = false;
+                    this.chatSubmit.disabled = false;
+                    this.chatInput.focus();
+                }
+            }
+
+            extractCustomerInfo(input) {
+                const lowerInput = input.toLowerCase();
+                
+                // Extract name (if not already captured)
+                if (!this.requiredInfo.name && this.currentPhase === 'greeting') {
+                    this.customerData.name = input.trim();
+                    this.requiredInfo.name = true;
+                    this.currentPhase = 'collecting';
+                }
+                
+                // Extract email
+                const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/;
+                const emailMatch = input.match(emailRegex);
+                if (emailMatch && !this.requiredInfo.email) {
+                    this.customerData.email = emailMatch[0];
+                    this.requiredInfo.email = true;
+                }
+                
+                // Extract phone
+                const phoneRegex = /(\d{3}[-.\s]?\d{3}[-.\s]?\d{4}|\(\d{3}\)\s*\d{3}[-.\s]?\d{4})/;
+                const phoneMatch = input.match(phoneRegex);
+                if (phoneMatch && !this.requiredInfo.phone) {
+                    this.customerData.phone = phoneMatch[0];
+                    this.requiredInfo.phone = true;
+                }
+                
+                // Extract address (simple detection)
+                if ((lowerInput.includes('street') || lowerInput.includes('ave') || lowerInput.includes('road') || 
+                     lowerInput.includes('drive') || lowerInput.includes('lane') || /\d{5}/.test(input)) && 
+                    !this.requiredInfo.address) {
+                    this.customerData.address = input;
+                    this.requiredInfo.address = true;
+                }
+                
+                // Extract roof size
+                const sizeRegex = /(\d+)\s*(sq|square|sqft|sq ft|square feet)/i;
+                const sizeMatch = input.match(sizeRegex);
+                if (sizeMatch && !this.requiredInfo.roofSize) {
+                    this.customerData.roofSize = input;
+                    this.requiredInfo.roofSize = true;
+                } else if ((lowerInput.includes('small') || lowerInput.includes('medium') || 
+                           lowerInput.includes('large') || lowerInput.includes('big')) && 
+                          !this.requiredInfo.roofSize) {
+                    this.customerData.roofSize = input;
+                    this.requiredInfo.roofSize = true;
+                }
+                
+                // Extract roof type
+                const roofTypes = ['shingle', 'metal', 'tile', 'flat', 'slate', 'wood', 'rubber', 'tpo', 'epdm'];
+                for (const type of roofTypes) {
+                    if (lowerInput.includes(type) && !this.requiredInfo.roofType) {
+                        this.customerData.roofType = input;
+                        this.requiredInfo.roofType = true;
+                        break;
+                    }
+                }
+                
+                // Extract work type
+                const workTypes = ['replacement', 'repair', 'new construction', 'install', 'fix', 'replace', 'leak'];
+                for (const type of workTypes) {
+                    if (lowerInput.includes(type) && !this.requiredInfo.workType) {
+                        this.customerData.workType = input;
+                        this.requiredInfo.workType = true;
+                        break;
+                    }
+                }
+                
+                // Extract urgency
+                const urgencyKeywords = ['asap', 'emergency', 'urgent', 'immediately', 'soon', 'week', 'month', 'planning'];
+                for (const keyword of urgencyKeywords) {
+                    if (lowerInput.includes(keyword) && !this.requiredInfo.urgency) {
+                        this.customerData.urgency = input;
+                        this.requiredInfo.urgency = true;
+                        break;
+                    }
+                }
+                
+                // Extract material preference
+                const materials = ['asphalt', 'metal', 'tile', 'slate', 'wood', 'composite', 'rubber'];
+                for (const material of materials) {
+                    if (lowerInput.includes(material) && !this.requiredInfo.material) {
+                        this.customerData.material = input;
+                        this.requiredInfo.material = true;
+                        break;
+                    }
+                }
+            }
+
+            async getAIResponse() {
+                // Create a prompt that includes what info we still need
+                const missingInfo = Object.entries(this.requiredInfo)
+                    .filter(([key, value]) => !value)
+                    .map(([key]) => key);
+                
+                const contextPrompt = `
+                    Customer data collected so far: ${JSON.stringify(this.customerData)}
+                    Still need to collect: ${missingInfo.join(', ')}
+                    
+                    Continue the conversation naturally to collect the missing information.
+                    Ask about one or two items at a time to keep it conversational.
+                `;
+                
+                // For demo purposes, using a simple response system
+                // In production, this would call OpenAI API
+                return this.getNextQuestion(missingInfo);
+            }
+
+            getNextQuestion(missingInfo) {
+                // Simple question flow based on missing info
+                if (missingInfo.includes('email')) {
+                    return `Thanks ${this.customerData.name}! What's your email address? Your estimate will be sent here.`;
+                } else if (missingInfo.includes('phone')) {
+                    return "What's the best phone number to reach you at?";
+                } else if (missingInfo.includes('address')) {
+                    return "What's the address of the property where you need roofing work?";
+                } else if (missingInfo.includes('roofSize')) {
+                    return "Can you tell me the approximate size of your roof or home square footage? This helps us provide a more accurate estimate.";
+                } else if (missingInfo.includes('roofType')) {
+                    return "What type of roof do you currently have? (e.g., asphalt shingles, metal, tile, flat roof)";
+                } else if (missingInfo.includes('workType')) {
+                    return "What type of roofing work do you need? Are you looking for a complete replacement, repairs, or is this for new construction?";
+                } else if (missingInfo.includes('material')) {
+                    return "What type of roofing material would you prefer for your project? We offer asphalt shingles, metal roofing, tile, and more.";
+                } else if (missingInfo.includes('urgency')) {
+                    return "When would you like to have this work completed? Is this urgent or are you planning ahead?";
+                } else {
+                    return "Is there anything else you'd like me to know about your roofing project?";
+                }
+            }
+
+            async generateEstimate() {
+                try {
+                    this.customerData.estimateGenerated = true;
+                    
+                    // Show generating message
+                    this.showTyping();
+                    
+                    // Call the Netlify function
+                    const response = await fetch(this.apiEndpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            customerData: this.customerData
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to generate estimate');
+                    }
+
+                    const data = await response.json();
+                    
+                    this.removeTyping();
+                    
+                    // Display the estimate
+                    this.displayEstimate(data.estimate);
+                    
+                    // Final message
+                    this.addMessage("Your detailed estimate has been generated and sent to your email! Our team will contact you within 24 hours to discuss your project and answer any questions.", 'bot');
+
+                } catch (error) {
+                    console.error('Error generating estimate:', error);
+                    this.removeTyping();
+                    
+                    // Fallback estimate display
+                    this.displayFallbackEstimate();
+                    this.addMessage("I've prepared your estimate! Our team will contact you within 24 hours with more details and to answer any questions.", 'bot');
+                }
+            }
+
+            displayEstimate(estimateContent) {
+                const estimateDiv = document.createElement('div');
+                estimateDiv.className = 'estimate-display';
+                estimateDiv.innerHTML = `
+                    <h3>Your Personalized Roofing Estimate</h3>
+                    <div class="estimate-content">${estimateContent}</div>
+                    <div class="estimate-actions">
+                        <button class="estimate-button" onclick="window.print()">Print Estimate</button>
+                        <button class="estimate-button secondary" onclick="location.reload()">Start New Estimate</button>
+                    </div>
+                `;
+                this.chatMessages.appendChild(estimateDiv);
+                this.scrollToBottom();
+            }
+
+            displayFallbackEstimate() {
+                // Fallback estimate based on collected data
+                const estimate = this.calculateBasicEstimate();
+                const estimateContent = `
+IRONCLAD ROOFING ESTIMATE
+                    
+Customer: ${this.customerData.name}
+Date: ${new Date().toLocaleDateString()}
+Property: ${this.customerData.address || 'To be confirmed'}
+
+PROJECT DETAILS:
+Type: ${this.customerData.workType || 'Roofing Service'}
+Current Roof: ${this.customerData.roofType || 'To be inspected'}
+Size: ${this.customerData.roofSize || 'To be measured'}
+Timeline: ${this.customerData.urgency || 'Flexible'}
+
+ESTIMATED PRICING:
+${estimate}
+
+This is a preliminary estimate. Final pricing will be provided after on-site inspection.
+
+NEXT STEPS:
+1. Our team will contact you within 24 hours
+2. Schedule a free on-site inspection
+3. Receive detailed final quote
+4. Begin work upon approval
+
+Thank you for choosing Ironclad Roofing!
+                `;
+                
+                this.displayEstimate(estimateContent);
+            }
+
+            calculateBasicEstimate() {
+                // Basic estimate calculation
+                let basePrice = 8000;
+                let priceRange = '';
+                
+                if (this.customerData.roofSize) {
+                    if (this.customerData.roofSize.toLowerCase().includes('small')) {
+                        priceRange = '$5,000 - $8,000';
+                    } else if (this.customerData.roofSize.toLowerCase().includes('large')) {
+                        priceRange = '$15,000 - $25,000';
+                    } else {
+                        priceRange = '$8,000 - $15,000';
+                    }
+                } else {
+                    priceRange = '$7,000 - $20,000';
+                }
+                
+                return `
+Materials: Included
+Labor: Included  
+Warranty: 25-50 years (material dependent)
+Cleanup: Included
+
+Estimated Total: ${priceRange}
+                `;
+            }
+
+            addMessage(text, type) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}`;
+                messageDiv.textContent = text;
+                this.chatMessages.appendChild(messageDiv);
+                this.scrollToBottom();
+            }
+
+            showTyping() {
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'typing';
+                typingDiv.id = 'typing-indicator';
+                this.chatMessages.appendChild(typingDiv);
+                this.scrollToBottom();
+            }
+
+            removeTyping() {
+                const typing = document.getElementById('typing-indicator');
+                if (typing) typing.remove();
+            }
+
+            showError(message) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.textContent = message;
+                this.chatMessages.appendChild(errorDiv);
+                this.scrollToBottom();
+            }
+
+            scrollToBottom() {
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+        }
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new IroncladAIChat();
+        });
+    </script>
+</body>
+</html>
