@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Follow Us - Ironclad Roofing</title>
+    <link rel="icon" type="image/x-icon" href="./ironclad_favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .header {
+            background-color: #000;
+            color: #fff;
+            padding: 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .main-content {
+            margin-top: 80px;
+            padding: 60px 20px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .page-header h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #000;
+        }
+
+        .page-header p {
+            font-size: 20px;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .social-platform {
+            background: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 3px solid transparent;
+        }
+
+        .social-platform:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .social-platform.facebook {
+            border-color: #1877f2;
+        }
+
+        .social-platform.instagram {
+            border-color: #e4405f;
+        }
+
+        .social-platform.linkedin {
+            border-color: #0077b5;
+        }
+
+        .social-platform.twitter {
+            border-color: #1da1f2;
+        }
+
+        .social-platform.youtube {
+            border-color: #ff0000;
+        }
+
+        .social-platform.tiktok {
+            border-color: #000;
+        }
+
+        .social-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .social-platform h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        .social-platform p {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .social-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #000;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .social-button:hover {
+            background: #333;
+            transform: translateY(-2px);
+        }
+
+        .facebook .social-button { background: #1877f2; }
+        .facebook .social-button:hover { background: #166fe5; }
+
+        .instagram .social-button { background: #e4405f; }
+        .instagram .social-button:hover { background: #d73559; }
+
+        .linkedin .social-button { background: #0077b5; }
+        .linkedin .social-button:hover { background: #006ca3; }
+
+        .twitter .social-button { background: #1da1f2; }
+        .twitter .social-button:hover { background: #1a91da; }
+
+        .youtube .social-button { background: #ff0000; }
+        .youtube .social-button:hover { background: #e60000; }
+
+        .tiktok .social-button { background: #000; }
+        .tiktok .social-button:hover { background: #333; }
+
+        .newsletter-section {
+            background: #000;
+            color: #fff;
+            padding: 60px 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .newsletter-section h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .newsletter-section p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 400px;
+            margin: 0 auto;
+            gap: 10px;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+        }
+
+        .newsletter-form button {
+            padding: 15px 25px;
+            background: #fff;
+            color: #000;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .newsletter-form button:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+
+        .contact-section {
+            background: #fff;
+            padding: 50px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .contact-section h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #000;
+        }
+
+        .contact-section p {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            text-align: center;
+        }
+
+        .contact-item h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #000;
+        }
+
+        .contact-item p {
+            color: #666;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .main-content {
+                margin-top: 120px;
+                padding: 40px 20px;
+            }
+
+            .page-header h1 {
+                font-size: 36px;
+            }
+
+            .social-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+                max-width: 300px;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">Ironclad Roofing</a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html">Get Estimate</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1>Follow Ironclad Roofing</h1>
+            <p>Stay connected with us for roofing tips, project updates, and the latest in AI-powered construction technology</p>
+        </div>
+
+        <div class="social-grid">
+            <div class="social-platform facebook">
+                <span class="social-icon">📘</span>
+                <h3>Facebook</h3>
+                <p>Get daily roofing tips, see our latest projects, and connect with our community of satisfied customers.</p>
+                <a href="#" class="social-button">Follow on Facebook</a>
+            </div>
+
+            <div class="social-platform instagram">
+                <span class="social-icon">📸</span>
+                <h3>Instagram</h3>
+                <p>Before & after photos, behind-the-scenes content, and stunning aerial shots of our completed roofing projects.</p>
+                <a href="#" class="social-button">Follow on Instagram</a>
+            </div>
+
+            <div class="social-platform linkedin">
+                <span class="social-icon">💼</span>
+                <h3>LinkedIn</h3>
+                <p>Industry insights, company updates, and professional content about the future of roofing technology.</p>
+                <a href="#" class="social-button">Connect on LinkedIn</a>
+            </div>
+
+            <div class="social-platform twitter">
+                <span class="social-icon">🐦</span>
+                <h3>Twitter</h3>
+                <p>Real-time updates, quick tips, weather alerts, and engaging with the roofing community conversation.</p>
+                <a href="#" class="social-button">Follow on Twitter</a>
+            </div>
+
+            <div class="social-platform youtube">
+                <span class="social-icon">🎥</span>
+                <h3>YouTube</h3>
+                <p>Educational videos, project walkthroughs, roofing maintenance tips, and technology demonstrations.</p>
+                <a href="#" class="social-button">Subscribe on YouTube</a>
+            </div>
+
+            <div class="social-platform tiktok">
+                <span class="social-icon">🎵</span>
+                <h3>TikTok</h3>
+                <p>Quick roofing tips, time-lapse project videos, and fun behind-the-scenes content with our crews.</p>
+                <a href="#" class="social-button">Follow on TikTok</a>
+            </div>
+        </div>
+
+        <div class="newsletter-section">
+            <h2>Join Our Newsletter</h2>
+            <p>Get weekly roofing tips, seasonal maintenance reminders, and exclusive offers delivered to your inbox</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Enter your email address" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+
+        <div class="contact-section">
+            <h2>Get In Touch</h2>
+            <p>Have questions or want to share your Ironclad Roofing experience? We'd love to hear from you!</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h4>Email</h4>
+                    <p>ironcladroofing@gmail.com</p>
+                </div>
+                <div class="contact-item">
+                    <h4>Service Area</h4>
+                    <p>Florida Statewide</p>
+                </div>
+                <div class="contact-item">
+                    <h4>Response Time</h4>
+                    <p>Within 48 Hours</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer style="background: #000; color: #fff; padding: 40px 20px; text-align: center; margin-top: 40px;">
+        <p>&copy; 2024 Ironclad Roofing. Licensed, Bonded, and Insured. All Rights Reserved.</p>
+        <p style="margin-top: 10px; opacity: 0.8;">Connecting communities through social media and quality roofing</p>
+    </footer>
+</body>
+</html>
