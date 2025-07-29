@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Learn Our Process – Ironclad Roofing</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      background-color: #121212;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .accordion-container {
+      width: 100%;
+      max-width: 800px;
+      background-color: #1c1c1c;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    }
+
+    .accordion-header {
+      width: 100%;
+      padding: 1.25rem;
+      background-color: #2b2b2b;
+      border: none;
+      outline: none;
+      color: #f5f5f5;
+      font-size: 1.25rem;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .accordion-header:hover {
+      background-color: #333;
+    }
+
+    .accordion-content {
+      padding: 1.25rem;
+      display: none;
+      background-color: #1e1e1e;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .accordion-content ol {
+      padding-left: 1.25rem;
+    }
+
+    .accordion-content li {
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="accordion-container">
+    <button class="accordion-header">Learn Our Process</button>
+    <div class="accordion-content">
+      <h3>🛠️ How Ironclad Roofing Works</h3>
+      <p><strong>From start to finish, we’ve designed a smarter, faster way to get your roof done right.</strong></p>
+      <ol>
+        <li><strong>Request Your Free Estimate</strong><br>Submit your project details through our online form — it only takes a minute.</li>
+        <li><strong>AI-Powered Project Review</strong><br>Our system analyzes your scope, materials, and location to generate a tailored estimate.</li>
+        <li><strong>Matched With Vetted Contractors</strong><br>We assign your job to a licensed, insured, and pre-vetted local subcontractor.</li>
+        <li><strong>Fast Scheduling & Execution</strong><br>We handle all logistics — from scheduling to material delivery — so your crew shows up on time.</li>
+        <li><strong>Final Inspection & Warranty</strong><br>We issue an <em>Ironclad Certificate of Completion and Warranty</em> once the job is done.</li>
+      </ol>
+      <p><strong>No upsells. No delays. No confusion.</strong><br>Ironclad Roofing delivers fast, professional results — powered by tech, executed by pros.</p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const header = document.querySelector(".accordion-header");
+      const content = document.querySelector(".accordion-content");
+
+      header.addEventListener("click", function () {
+        content.style.display = (content.style.display === "block") ? "none" : "block";
+      });
+    });
+  </script>
+
+</body>
+</html>
